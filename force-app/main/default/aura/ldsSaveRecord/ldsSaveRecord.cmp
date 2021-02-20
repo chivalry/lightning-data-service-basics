@@ -1,26 +1,33 @@
 <aura:component implements="flexipage:availableForRecordHome, force:hasRecordId">
-    <aura:attribute name="record"
-                    type="Object"
-                    description="The record object to be displayed" />
-    <aura:attribute name="simpleRecord"
-                    type="Object"
-                    description="A simplified view record object to be displayed" />
-    <aura:attribute name="recordError"
-                    type="String"
-                    description="An error message bound to force:recordData" />
-    <force:recordData aura:id="record"
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="simpleRecord" type="Object" />
+    <aura:attribute name="recordError" type="Object" />
+    <force:recordData aura:id="recordEditor"
                       fields="Name,BillingCity,BillingState"
                       recordId="{!v.recordId}"
                       targetError="{!v.recordError}"
                       targetRecord="{!v.record}"
                       targetFields="{!v.simpleRecord}"
-                      mode="VIEW" />
+                      mode="EDIT" />
     <lightning:card iconName="standard:account" title="{!v.simpleRecord.Name}">
         <div class="slds-p-horizontal--small">
+            <p class="slds-text-heading--small">
+                <lightning:formattedText title="Billing State"
+                                         value="{!v.simpleRecord.BillingState}" />
+            </p>
             <p class="slds-text-heading--small">
                 <lightning:formattedText title="Billing City"
                                          value="{!v.simpleRecord.BillingCity}" />
             </p>
+        </div>
+    </lightning:card>
+    <lightning:card iconName="action:edit" title="Edit Account">
+        <div class="slds-p-horizontal--small">
+            <lightning:input label="Account Name" value="{!v.simpleRecord.Name}" />
+            <br />
+            <lightning:button label="Save Account"
+                              variant="brand"
+                              onclick="{!c.handleSaveRecord}" />
         </div>
     </lightning:card>
     <aura:if isTrue="{!not(empty(v.recordError))}">
